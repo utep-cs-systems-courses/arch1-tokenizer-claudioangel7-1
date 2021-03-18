@@ -7,10 +7,10 @@
    Zero terminators are not printable (therefore false) */
 int space_char(char c)
 {
-  if(c == '\0' || c == ' ' || c == '\t'){
-      return 0;
+  if(c =='\0'|| c == ' ' || c == '\t'){
+      return 1;
     }
-    return 1;
+    return 0;
 }
 
 /* Return true (non-zero) if c is a non-whitespace 
@@ -18,10 +18,10 @@ int space_char(char c)
    Zero terminators are not printable (therefore false) */ 
 int non_space_char(char c)
 {
-    if(c == ' ' || c == '\t'){
-      return 1; 
+    if(c == ' ' || c == '\t' || c == '\n' ){
+      return 0; 
     }
-    return 0;
+    return 1;
 }
 
 /* Returns a pointer to the first character of the next 
@@ -88,14 +88,14 @@ char *copy_str(char *inStr, short len)
 
   int token_size = len;
   char *token =(char*) malloc((token_size+1)*sizeof(char));   /*Allocate memory for the word*/
-  char *startT = word_start(inStr);
+ 
 
   
   /*Iterate letter by letter for allocating each letter in memory*/
   for(int i = 0; i < token_size; i++){    
-    *token = *startT;         
+    *token = *inStr;         
     token++;       /* moving pointer to keep allocating the letters */       
-    startT++;
+    inStr++;
   }
   
   *token = '\0'; /*assigning null to the last*/         
@@ -124,7 +124,7 @@ char **tokenize(char *str)
   char *startT = word_start(str);     
   
   for(int i = 0; i < numWords; i++){
-    tokens[i] = copy_str(startT, (word_terminator(str) - word_start(str)));
+    tokens[i] = copy_str(startT, (word_terminator(startT) - word_start(startT)));
     startT = word_terminator(startT);     
     startT = word_start(startT);    
   }
@@ -136,7 +136,7 @@ char **tokenize(char *str)
 void print_tokens(char **tokens)
 {
   int i = 0;
-  while(**tokens != '\0'){
+  while(*tokens != NULL){
     printf("token at [%d]: %s\n",i, *tokens);  
     tokens++;
     i++;
@@ -146,7 +146,7 @@ void print_tokens(char **tokens)
 /* Frees all tokens and the vector containing them. */
 void free_tokens(char **tokens)
 {
-  while(**tokens != '\0')
+  while(*tokens != NULL)
   {
     free(*tokens);
     tokens++;
