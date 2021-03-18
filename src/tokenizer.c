@@ -30,7 +30,7 @@ int non_space_char(char c)
 char *word_start(char *str)
 {
   while(*str != '\0'){
-    if(non_space_char(*str))       //return the pointer current position if character being pointed is letter.
+    if(non_space_char(*str))  //return the pointer current position if character being pointed is letter.
       return str;    
     else              //Move pointer if character being pointed is space
       str++;
@@ -41,34 +41,33 @@ char *word_start(char *str)
 /* Returns a pointer terminator char following *word */
 char *word_terminator(char *str)
 {
-    char *start = word_start(str);
-    int len = strlen(str);
 
-    return &str[len];
- /*  
-    while(*str != '\0'){
+  int i = 0;
+  
+  while(str[i] != '\0'){
 
-      if(non_space_char(*str) == 0){
-        str++;
+      if(non_space_char(str[i]) == 0){
+        return &str[i];
       }
 
-      if(space_char(*str) == 0){
-        return str;
+      if(space_char(str[i]) == 0){
+        i++;
       }
     }
-    str++;
-    */
+    return &str[i];
+ 
 }
     
 /* Counts the number of words in the string argument. */
 int count_words(char *str)
 {
+   
     int count = 0;
     int pass = 0;
 
     while(*str){
 	
-        if (space_char(str[1]) == 1){ /*Excluding spaces, tabs or new lines */
+        if (space_char(str[0]) == 1){ /*Excluding spaces, tabs or new lines */
             pass = 0;
         } else if (pass == 0){ /*Else if that founds a word hence increment the counter */
             pass = 1;
@@ -87,20 +86,19 @@ int count_words(char *str)
 char *copy_str(char *inStr, short len)
 {
 
-  short token_size = len; 
+  int token_size = len;
   char *token =(char*) malloc((token_size+1)*sizeof(char));   /*Allocate memory for the word*/
   char *startT = word_start(inStr);
 
   
   /*Iterate letter by letter for allocating each letter in memory*/
-  for(int i = 0; i < token_size; i++)
-  {    
+  for(int i = 0; i < token_size; i++){    
     *token = *startT;         
     token++;       /* moving pointer to keep allocating the letters */       
     startT++;
   }
   
-  *token = '\0'; /*assigning null to the last letter*/         
+  *token = '\0'; /*assigning null to the last*/         
   return token -= token_size;
 
 }
@@ -125,9 +123,8 @@ char **tokenize(char *str)
   
   char *startT = word_start(str);     
   
-  for(int i = 0; i < numWords; i++)
-  {
-    tokens[i] = copy_str(startT,strlen(str));
+  for(int i = 0; i < numWords; i++){
+    tokens[i] = copy_str(startT, (word_terminator(str) - word_start(str)));
     startT = word_terminator(startT);     
     startT = word_start(startT);    
   }
