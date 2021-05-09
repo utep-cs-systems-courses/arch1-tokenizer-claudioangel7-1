@@ -1,9 +1,11 @@
-tokenizer_test: tokenizer.o tokenizerUI.o history.o
-	cc -o ftoc_test tokenizer.o tokenizerUI.o history.o
-	
-clean: 
-	rm -f *.o ftoc_test
-	
-tokenizerUI.o: tokenizer.c tokenizerUI.c tokenizer.h history.o
+project1: tokenizer.o history.o simpleUI.o
+	gcc -o project1 tokenize.o history.o simpleUI.o
 
-tokenizer.o: tokenizer.c tokenizer.h history.o
+tokenizer.o: tokenizer.c tokenizer.h
+
+history.o: history.c history.h
+
+simpleUI.o: simpleUI.c tokenizer.h history.h
+
+clean:
+	rm -f *.o project1
