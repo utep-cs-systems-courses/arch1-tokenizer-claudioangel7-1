@@ -1,4 +1,4 @@
-tokenizer: tokenizer.o tokenizerUI.o history.o
+tokenizer_test: tokenizer.o tokenizerUI.o history.o
 	cc -o ftoc_test tokenizer.o tokenizerUI.o history.o
 	
 clean: 
